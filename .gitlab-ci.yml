@@ -1,0 +1,74 @@
+cache:
+  key:
+    files:
+      - poetry.lock
+      - .gitlab-ci.yml
+    prefix: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .venv
+    - .cache/pip
+    - echo `poetry env info --path`
+    - .poetry
+
+stages:
+  - check
+  - build
+  - docs
+
+variables:
+  DOCKER_IMAGE: python:3.9-buster
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+.before_script_template:
+  before_script:
+    - poetry config virtualenvs.in-project true
+    # it's necessary also to remove and install again the libraries to have a clean environment
+    # - rm -rf poetry.lock
+    # - rm -rf poetry.toml
+    # - pip install --upgrade setuptools wheel
+    - poetry install
+
+python_code_lint:
+  stage: check
+  image: $DOCKER_IMAGE
+  extends: .before_script_template
+  script:
+    - poetry run black .
+
+static_type_check:
+  stage: check
+  image: $DOCKER_IMAGE
+  extends: .before_script_template
+  script:
+    - poetry run flake8 .
+
+image:streamlit:
+  stage: build
+  image: docker:20-dind
+  variables:
+    IMAGE_NAME: streamlit
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - name: docker:20-dind
+      alias: docker
+      command: ["--tls=false"]
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    # need to cache the custom docker image before downloading here
+    - docker pull $DOCKER_IMAGE
+    - >
+      docker build
+      --pull
+      --build-arg http_proxy=$http_proxy
+      --build-arg https_proxy=$https_proxy
+      --build-arg no_proxy=$no_proxy
+      --cache-from $DOCKER_IMAGE
+      -t $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_REF_SLUG
+      -f ./Docker/app.dockerfile 
+      .
+    - docker push $CI_REGISTRY_IMAGE/$IMAGE_NAME:$CI_COMMIT_REF_SLUG
+  only:
+    - tags

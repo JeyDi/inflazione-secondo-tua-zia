@@ -1,16 +1,53 @@
-
-version: '3.9'
-
+version: "3.8"
 services:
+  app:
+    #image: endpoint where your image is : develop
+    build:
+      dockerfile: ./Docker/app.dockerfile
+      context: .
+    container_name: inflazia_dashboard
+    # env_file:
+    #   - .env
+    restart: always
+    environment:
+      VERBOSITY: ${VERBOSITY:-INFO}
+      DB_NAME: ${DB_NAME:-streamlit}
+      DB_PASSWORD: ${DB_PASSWORD:-PRova42}
+      DB_USER: ${DB_USER:-test}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_HOST: ${DB_HOST:-streamlit_db}
+    depends_on:
+      - db
+    ports:
+      - "${APP_DOCKER_PORT:-8045}:${APP_ENDPOINT_PORT:-8000}"
 
-    jupyter:
-        build: .
-        image: machine-learning-jupyterlab-docker
-        user: root
-        ports:
-            - 8888:8888
-        volumes:
-            - ./project:/project
-        command: jupyter lab --ip=0.0.0.0 --port=8888 --allow-root
-                    
+  db:
+    build:
+      dockerfile: ./Docker/db.dockerfile
+      context: .
+    # env_file:
+    #   - .env
+    container_name: inflazia_db
+    #image: postgres:13.2
+    environment:
+      POSTGRES_DB: ${DB_NAME:-streamlit}
+      POSTGRES_USER: ${DB_USER:-test}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-PRova42}
+    ports:
+      - ${EXTERNAL_DB_PORT:-5492}:5432
+    volumes:
+      - ${POSTGRES_DATA_DIR:-./volumes/db/data}:/var/lib/postgresql/data
+      - ${POSTGRES_BACKUP_DIR:-./volumes/db/backup}:/project/backup
 
+  jupyter:
+    build:
+      dockerfile: ./Docker/jupyter.dockerfile
+      context: .
+    container_name: inflazia_jupyter
+    # image: machine-learning-jupyterlab-docker
+    user: root
+    ports:
+      - ${JUPYTER_PORT:-8888}:8888
+    volumes:
+      - ./project:/project
+    command: jupyter lab --ip=0.0.0.0 --port=8888 --allow-root

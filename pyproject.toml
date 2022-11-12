@@ -1,0 +1,90 @@
+[tool.poetry]
+name = "Inflazia"
+version = "0.1.0"
+description = "Inflazione spiegata a tua zia"
+authors = ["Pollo Watzlawick", "Andrea Guzzo"]
+license = "GNU"
+homepage = ""
+repository = "https://github.com/pieroit/inflazione-secondo-tua-zia"
+documentation = ""
+
+classifiers = [
+    "Topic :: Streamlit",
+    "Topic :: Dashboard",
+    "Topic :: Data",
+    "Topic :: Analysis",
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9.8, <3.11"
+python-dotenv = "^0.19.2"
+pydantic = "^1.9.1"
+pytest = "^6.2.5"
+requests = "^2.26.0"
+pyaml = "^21.8.3"
+pandas = "^1.3.3"
+numpy = "1.21"
+Unidecode = "^1.3.2"
+matplotlib = "^3.5.1"
+plotly = "^5.9.0"
+streamlit = "^1.14.0"
+streamlit-aggrid = "^0.2.3"
+streamlit-plotly-events = "^0.0.6"
+streamlit-folium = "^0.6.7"
+watchdog = "^2.1.6"
+nycflights13 = "^0.0.3"
+python-keycloak = "^1.8.0"
+click = "^8.1.3"
+extra-streamlit-components = "^0.1.55"
+streamlit-option-menu = "^0.3.2"
+st-clickable-images = "^0.0.3"
+scikit-learn = "^1.1.3"
+seaborn = "^0.12.1"
+jupyterlab = "^3.5.0"
+ipywidgets = "^8.0.2"
+jupyter-dash = "^0.4.2"
+tqdm = "^4.64.1"
+stqdm = "^0.0.4"
+lxml = "^4.9.1"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^5"
+flake8-isort = "^4.0.0"
+flake8-builtins = "^1.5.3"
+flake8-bandit = "^4"
+autopep8 = "^1.5.7"
+pylint = "^2.8.2"
+bandit = "^1.7.0"
+black = "^22"
+autoflake = "^1.3.1"
+pytest-cov = "^2.8.1"
+ipython = "^7.28"
+commitizen = "^2.20.0"
+jupyter = "^1.0.0"
+mypy = "0.982"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+line_length = 120
+
+[build-system]
+requires = ["poetry-core>=1.1.13"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.pytest.ini_options]
+markers = [
+    "functions: mark test for the base functionalities",
+    "core: all about the core",
+    "db: all about the database",
+    "api: all about the api of the system",
+    "data: all about the data",
+    "analysis: all about the analysis"
+]
+
+[[tool.poetry.source]]
+name = "pypi.org"
+url = "https://pypi.org/simple"
+default = true

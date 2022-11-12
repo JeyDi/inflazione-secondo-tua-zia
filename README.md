@@ -1,4 +1,4 @@
-# L' Inflazione secondo tua zia 👵
+# Progetto InflaZia: L' Inflazione secondo tua zia 👵
 
 Il governo e i matusa ci dicono che l'inflazione è circa all' X, ma le nostre zie hanno un'esperienza ben diversa quando tornano scalze dal supermercato.
 
@@ -17,19 +17,30 @@ I seguenti grafici riguardano l'inflazione tra Settembre 2021 e Settembre 2022
 
 ## Inflazione generale: 12.607 %
 
-![](project/per_tipo.svg)
-![](project/per_provincia.svg)
+![](imgs/per_tipo.svg)
+![](imgs/per_provincia.svg)
+
+# Funzionalità
+
+All'interno di questa repository puoi trovare due differenti approcci:
+1. Sono uno smanettone di dati e basta: puoi trovare due Jupyter notebook contenenti le analisi all'interno della cartella `analysis`
+2. Voglio anche fare delle dashboard: puoi trovare un'implementazione in Streamlit di una dashboard che consente di visualizzare le informazioni analizzate in modo dinamico.
 
 ## Voglio smanettare con i dati
 
-Ci sono due notebook, uno per scaricare i dati dal MISE e uno per fare stats e grafici. Le pull request sono benvenute!
+Se vuoi solo smanettare e mettere la mani ai dati puoi utilizzare i due notebook all'interno della cartella `analysis`
 
-![](project/estratto.png)
+Uno serve per scaricare i dati dal MISE e uno per fare stats e grafici. 
+
+Le pull request sono benvenute!
+
+![](imgs/estratto.png)
 
 Ciao zia, ti voglio bene.
 Seguono istruzioni per i nerd.
 
 # Come installare
+
 
 ## Prerequisites
 

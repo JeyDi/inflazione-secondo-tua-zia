@@ -1,0 +1,12 @@
+[server]
+port=8000 # change port number. By default streamlit uses 8501 port
+headless=true # This will eliminate automatically open browser
+
+[browser] # This ip and port will show in command prompt
+serverAddress = "poc_example_ui" # Put your Local IP or Domain Name
+serverPort = 8000
+
+[theme]
+backgroundColor="#345373"
+secondaryBackgroundColor="#345373"
+textColor="#FFFFFF"
